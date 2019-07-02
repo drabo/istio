@@ -180,7 +180,7 @@ You may observe in the command that we use:
   - this is the name of Minikube cluster that is added to /etc/hosts with the following command:
 
     ```shell
-    echo $(minikube ip)" cluster"
+    sudo echo -e "\n"$(minikube ip)" cluster" | sudo tee -a /etc/hosts
     ```
 
 - port: 31380
@@ -256,6 +256,12 @@ configmap/nginx-conf created
 deployment.extensions/reverse-proxy created
 service/nginx-service created
 ingress.extensions/nginx-ingress created
+```
+
+Make sure you add `httpbin.local` in your /etc/hosts
+
+```shell
+sudo echo -e "\n"$(minikube ip)" httpbin.local" | sudo tee -a /etc/hosts
 ```
 
 Now you are able to access the application *httpbin* in browser: http://httpbin.local
