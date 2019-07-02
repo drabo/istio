@@ -15,7 +15,9 @@ All these terms refer to the same thing that is the Kubernetes cluster containin
 
 Istio running on Minikube will need additional resources on top of what is instaled by default with `minikube start` (2CPU and 4GB RAM).
 
-Istio recommends on their [site](https://istio.io/docs/setup/kubernetes/platform-setup/minikube/) a cluster with 4CPU and 16GB RAM but I managed to install it on a Minikube cluster with **2CPU and 8GB RAM** and it 's working fine.
+Istio recommends on their [site](https://istio.io/docs/setup/kubernetes/platform-setup/minikube/) a cluster with 4CPU and 16GB RAM but I managed to install it on a Minikube cluster with **2CPU and 8GB RAM** and it worked.
+
+As your Minikube cluster will grow then you will surely need more resources.
 
 ## Installation ##
 
