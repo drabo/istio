@@ -114,6 +114,7 @@ kubectl -n httpbin apply -f samples/httpbin/httpbin.yaml
 
 ```shell
 $ kubectl -n httpbin describe svc/httpbin
+
 Name:              httpbin
 Namespace:         httpbin
 Labels:            app=httpbin
@@ -188,6 +189,7 @@ You may observe in the command that we use:
 
     ```shell
     $ kubectl -n istio-system describe svc/istio-ingressgateway|grep NodePort
+
     NodePort:                 status-port  31377/TCP
     NodePort:                 http2  31380/TCP
     NodePort:                 https  31390/TCP
