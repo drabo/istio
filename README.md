@@ -238,3 +238,24 @@ You may use the extension/addon `ModHeader` that is available for Chrome and Fir
 In ModHeader you should set the header `Host` with the value `httpbin.local` and access the page [http://cluster:31380](http://cluster:31380).
 
 Istio documentation: https://istio.io/docs/tasks/traffic-management/ingress/ingress-control/
+
+## Reverse proxy ##
+
+In order to make an easier way to access the web application, we may create a reverse proxy to work together with the Istio gateway. In this way you won't need to forward headers using browser extension/addon as described above.
+
+With the script [reverse-proxy.yaml](reverse-proxy.yaml) you will create the reverse proxy components:
+
+- an Nginx configured to forward all HTTP traffic addressed to any application `*.local` towards Istio HTTP service. The Nginx will forward also the header *Host* that is necessary in Istio to route the traffic to the proper application.
+- a service and an ingress that will collect all HTTP trafic to `*.local`
+
+```shell
+$ kubectl apply -f reverse-proxy.yaml
+
+namespace/reverse-proxy created
+configmap/nginx-conf created
+deployment.extensions/reverse-proxy created
+service/nginx-service created
+ingress.extensions/nginx-ingress created
+```
+
+Now you are able to access the application *httpbin* in browser: http://httpbin.local
