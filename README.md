@@ -15,7 +15,7 @@ All these terms refer to the same thing that is the Kubernetes cluster containin
 
 Istio running on Minikube will need additional resources on top of what is instaled by default with `minikube start` (2CPU and 4GB RAM).
 
-Istio recommends on their [site](https://istio.io/docs/setup/kubernetes/platform-setup/minikube/) a cluster with 4CPU and 16GB RAM but I managed to install it on a Minikube cluster with **2CPU and 8GB RAM** and it worked.
+Istio recommends on their [site](https://istio.io/docs/setup/kubernetes/platform-setup/minikube/) a cluster with 4CPU and 16GB RAM but I managed to install it on a Minikube cluster with **2CPU and 8GB RAM** and it worked with one sample application as seen below.
 
 As your Minikube cluster will grow then you will surely need more resources.
 
@@ -151,8 +151,6 @@ Apply the changes from [`httpbin-gateway.yaml`](httpbin-gateway.yaml):
 ```shell
 kubectl apply -f httpbin-gateway.yaml
 ```
-
-> :exclamation: Do not create the gateway and virtual service in any namespace. Leave it in the default namespace otherwise you won't be able to access the application.
 
 ### Check demo application ###
 
