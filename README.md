@@ -250,6 +250,8 @@ With the script [reverse-proxy.yaml](reverse-proxy.yaml) you will create the rev
 - an Nginx configured to forward all HTTP traffic addressed to any application `*.local` towards Istio HTTP service. The Nginx will forward also the header *Host* that is necessary in Istio to route the traffic to the proper application.
 - a service and an ingress that will collect all HTTP trafic to `*.local`
 
+In reverse-proxy.yaml you may want to modify the version of Nginx to the latest or according to your needs.
+
 ```shell
 $ kubectl apply -f reverse-proxy.yaml
 
