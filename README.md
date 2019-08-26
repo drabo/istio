@@ -34,7 +34,7 @@ Istio documentation: https://istio.io/docs/setup/kubernetes/
 The directory contains several directories. You will use scripts from *install* and *samples*.
 
 ```shell
-cd istio-1.2.0
+cd istio-1.2.4
 
 $ ls -lA
 total 33
