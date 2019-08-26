@@ -26,7 +26,7 @@ As your Minikube cluster will grow then you will surely need more resources.
 The following command will download and unpack Istio:
 
 ```shell
-curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.2.0 sh -
+curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.2.4 sh -
 ```
 
 Istio documentation: https://istio.io/docs/setup/kubernetes/
@@ -34,7 +34,7 @@ Istio documentation: https://istio.io/docs/setup/kubernetes/
 The directory contains several directories. You will use scripts from *install* and *samples*.
 
 ```shell
-cd istio-1.2.0
+cd istio-1.2.4
 
 $ ls -lA
 total 33
