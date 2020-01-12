@@ -1,0 +1,17 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: istio-prometheus-ingress
+  namespace: istio-system
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: istio-prometheus.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prometheus
+          servicePort: 9090
