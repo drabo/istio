@@ -2,11 +2,11 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: kiali-gateway
+  name: kiali-gw
   namespace: istio-system
 spec:
   selector:
-    istio: internal-ingressgateway
+    istio: ingressgateway
   servers:
   - hosts:
     - kiali.local
@@ -23,7 +23,7 @@ metadata:
   namespace: istio-system
 spec:
   gateways:
-  - kiali-gateway
+  - kiali-gw
   hosts:
   - kiali.local
   http:
