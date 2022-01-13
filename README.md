@@ -269,3 +269,51 @@ echo -e "\n"$(minikube ip)" httpbin.local" | sudo tee -a /etc/hosts
 ```
 
 Now you are able to access the application *httpbin* in browser: http://httpbin.local
+
+## Install Istio with istioctl ##
+
+### Copy istioctl to a dir in PATH ###
+
+You will find it in `istio-1.x.y/bin/`
+
+The path may be `/usr/local/bin/istioctl`
+
+### Auto completion ###
+
+Copy `istio-1.x.y/tools/istioctl.bash` in a location like `$HOME/.local/bin/istioctl.bash`
+
+Add in .bashrc the line:
+
+```shell
+source $HOME/.local/bin/istioctl.bash
+```
+
+### List available installation profiles ###
+
+```shell
+$ istioctl profile list
+Istio configuration profiles:
+    default
+    demo
+    empty
+    minimal
+    openshift
+    preview
+    remote
+```
+
+### Get profile details ###
+
+```shell
+istioctl profile dump demo
+```
+
+### Install profile demo ###
+
+```shell
+istioctl install --set profile=demo
+```
+
+More details at:
+
+<https://istio.io/latest/docs/setup/install/istioctl/>
