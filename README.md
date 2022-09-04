@@ -276,7 +276,7 @@ Now you are able to access the application *httpbin* in browser: http://httpbin.
 
 You will find it in `istio-1.x.y/bin/`
 
-The path may be `/usr/local/bin/istioctl`
+The destination path may be `/usr/local/bin/istioctl`
 
 ### Auto completion ###
 
@@ -305,15 +305,133 @@ Istio configuration profiles:
 ### Get profile details ###
 
 ```shell
-istioctl profile dump demo
+istioctl profile dump default
 ```
 
-### Install profile demo ###
+### Install profile default ###
 
 ```shell
-istioctl install --set profile=demo
+istioctl install --set profile=default
 ```
 
 More details at:
 
 <https://istio.io/latest/docs/setup/install/istioctl/>
+
+## Upgrade Istio with istioctl ##
+
+Download the `istioctl` target version for the upgrade from https://github.com/istio/istio/releases
+
+>The installed Istio version is no more than one minor version less than the upgrade version. For example, 1.6.0 or higher is required before you start the upgrade process to 1.7.x.
+
+The upgrade commands should be run using the new version of `istioctl`.
+
+Check current installation:
+
+```shell
+$ istioctl x precheck 
+✔ No issues found when checking the cluster. Istio is safe to install or upgrade!
+  To get started, check out https://istio.io/latest/docs/setup/getting-started/
+```
+
+>Traffic disruption may occur during the upgrade process. To minimize the disruption, ensure that at least two replicas of `istiod` are running. Also, ensure that `PodDisruptionBudgets` are configured with a minimum availability of 1.
+
+The **in-place upgrade**
+
+You need to provide in command line the same `set` parameters provided at installation.
+If in the installation process was used `--set profile=default` then it should be used also in the upgrade.
+
+```shell
+$ istioctl upgrade --set profile=default
+This will install the Istio 1.15.0 default profile with ["Istio core" "Istiod" "Ingress gateways"] components into the cluster. Proceed? (y/N) y
+✔ Istio core installed    
+✔ Istiod installed         
+✔ Ingress gateways installed
+✔ Installation complete
+Making this installation the default for injection and validation.
+```
+
+More about the upgrade CLI parameters on https://istio.io/latest/docs/reference/commands/istioctl/#istioctl-upgrade
+
+Check after upgrade:
+
+```shell
+$ istioctl verify-install
+1 Istio control planes detected, checking --revision "default" only
+✔ ClusterRole: istiod-istio-system.istio-system checked successfully
+✔ ClusterRole: istio-reader-istio-system.istio-system checked successfully
+✔ ClusterRoleBinding: istio-reader-istio-system.istio-system checked successfully
+✔ ClusterRoleBinding: istiod-istio-system.istio-system checked successfully
+✔ ServiceAccount: istio-reader-service-account.istio-system checked successfully
+✔ Role: istiod-istio-system.istio-system checked successfully
+✔ RoleBinding: istiod-istio-system.istio-system checked successfully
+✔ ServiceAccount: istiod-service-account.istio-system checked successfully
+✔ CustomResourceDefinition: wasmplugins.extensions.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: destinationrules.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: envoyfilters.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: gateways.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: proxyconfigs.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: serviceentries.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: sidecars.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: virtualservices.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: workloadentries.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: workloadgroups.networking.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: authorizationpolicies.security.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: peerauthentications.security.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: requestauthentications.security.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: telemetries.telemetry.istio.io.istio-system checked successfully
+✔ CustomResourceDefinition: istiooperators.install.istio.io.istio-system checked successfully
+✔ HorizontalPodAutoscaler: istiod.istio-system checked successfully
+✔ ClusterRole: istiod-clusterrole-istio-system.istio-system checked successfully
+✔ ClusterRole: istiod-gateway-controller-istio-system.istio-system checked successfully
+✔ ClusterRoleBinding: istiod-clusterrole-istio-system.istio-system checked successfully
+✔ ClusterRoleBinding: istiod-gateway-controller-istio-system.istio-system checked successfully
+✔ ConfigMap: istio.istio-system checked successfully
+✔ Deployment: istiod.istio-system checked successfully
+✔ ConfigMap: istio-sidecar-injector.istio-system checked successfully
+✔ MutatingWebhookConfiguration: istio-sidecar-injector.istio-system checked successfully
+✔ PodDisruptionBudget: istiod.istio-system checked successfully
+✔ ClusterRole: istio-reader-clusterrole-istio-system.istio-system checked successfully
+✔ ClusterRoleBinding: istio-reader-clusterrole-istio-system.istio-system checked successfully
+✔ Role: istiod.istio-system checked successfully
+✔ RoleBinding: istiod.istio-system checked successfully
+✔ Service: istiod.istio-system checked successfully
+✔ ServiceAccount: istiod.istio-system checked successfully
+✔ EnvoyFilter: stats-filter-1.13.istio-system checked successfully
+✔ EnvoyFilter: tcp-stats-filter-1.13.istio-system checked successfully
+✔ EnvoyFilter: stats-filter-1.14.istio-system checked successfully
+✔ EnvoyFilter: tcp-stats-filter-1.14.istio-system checked successfully
+✔ EnvoyFilter: stats-filter-1.15.istio-system checked successfully
+✔ EnvoyFilter: tcp-stats-filter-1.15.istio-system checked successfully
+✔ ValidatingWebhookConfiguration: istio-validator-istio-system.istio-system checked successfully
+✔ HorizontalPodAutoscaler: istio-ingressgateway.istio-system checked successfully
+✔ Deployment: istio-ingressgateway.istio-system checked successfully
+✔ PodDisruptionBudget: istio-ingressgateway.istio-system checked successfully
+✔ Role: istio-ingressgateway-sds.istio-system checked successfully
+✔ RoleBinding: istio-ingressgateway-sds.istio-system checked successfully
+✔ Service: istio-ingressgateway.istio-system checked successfully
+✔ ServiceAccount: istio-ingressgateway-service-account.istio-system checked successfully
+Checked 15 custom resource definitions
+Checked 2 Istio Deployments
+✔ Istio is installed and verified successfully
+```
+
+More about `in-place upgrade` on https://istio.io/latest/docs/setup/upgrade/in-place/
+
+There is also the `canary upgrade` option: https://istio.io/latest/docs/setup/upgrade/canary/
+
+## Uninstall Istio ##
+
+```shell
+istioctl x uninstall --purge
+```
+
+```shell
+kubectl delete namespace istio-system
+```
+
+## Istio for ARM64 ##
+
+Starting with Istio version 1.15 (9-aug-2022) there are ARM64 images provided by Istio:
+
+Check https://hub.docker.com/r/istio/proxyv2/tags
