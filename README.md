@@ -1,4 +1,4 @@
-# Install Istio on a Minkube Kubernetes local cluster #
+# Install Istio on a Minkube Kubernetes local cluster
 
 In the following document you will find several terms like:
 
@@ -9,9 +9,9 @@ In the following document you will find several terms like:
 
 All these terms refer to the same thing that is the Kubernetes cluster containing one node hosted on a local VirtualBox VM, created and managed with the CLI tool called Minikube.
 
-## Preparation ##
+## Preparation
 
-### Virtual Machine resources ###
+### Virtual Machine resources
 
 Istio running on Minikube will need additional resources on top of what is instaled by default with `minikube start` (2CPU and 4GB RAM).
 
@@ -19,9 +19,9 @@ Istio recommends on their [site](https://istio.io/docs/setup/kubernetes/platform
 
 As your Minikube cluster will grow then you will surely need more resources.
 
-## Installation ##
+## Installation
 
-### Download latest Istio package ###
+### Download latest Istio package
 
 The following command will download and unpack Istio:
 
@@ -47,19 +47,19 @@ drwxr-xr-x+ 1 bond None     0 Jun 19 00:46 samples
 drwxr-xr-x+ 1 bond None     0 Jun 19 00:46 tools
 ```
 
-### Create dedicated namespace for Istio ###
+### Create dedicated namespace for Istio
 
 ```shell
 kubectl create namespace istio-system
 ```
 
-### Install Istio components ###
+### Install Istio components
 
 ```shell
 kubectl apply -f install/kubernetes/istio-demo.yaml
 ```
 
-### Checks to be made ###
+### Checks to be made
 
 Check that CRDs are deployed.
 They should be either 23 or 28 if cert-manager is enabled.
@@ -80,15 +80,15 @@ Check Istio pods:
 kubectl -n istio-system get pods
 ```
 
-## Application deployment ##
+## Application deployment
 
 You may use a demo application provided by Istio or you may deploy your own application.
 
-### Deploy demo application ###
+### Deploy demo application
 
 The application is called **httpbin** and is provided in the directory samples.
 
-#### Create namespace httpbin ####
+#### Create namespace httpbin
 
 Istio does not create a dedicated namespace for it but you will do this:
 
@@ -96,7 +96,7 @@ Istio does not create a dedicated namespace for it but you will do this:
 kubectl create namespace httpbin
 ```
 
-#### Apply istio-injection label to namespace httpbin ####
+#### Apply istio-injection label to namespace httpbin
 
 Apply `istio-injection` label to the new namespace in order to make Istio aware that it should manage the traffic of the applications residing into this namespace:
 
@@ -104,7 +104,7 @@ Apply `istio-injection` label to the new namespace in order to make Istio aware 
 kubectl label namespace httpbin istio-injection=enabled
 ```
 
-#### Deploy the httpbin application ####
+#### Deploy the httpbin application
 
 Deploy the application into the dedicated namespace:
 
@@ -112,7 +112,7 @@ Deploy the application into the dedicated namespace:
 kubectl -n httpbin apply -f samples/httpbin/httpbin.yaml
 ```
 
-#### Check the service created ####
+#### Check the service created
 
 ```shell
 $ kubectl -n httpbin describe svc/httpbin
@@ -134,7 +134,7 @@ Events:            <none>
 
 You may observe first 2 lines with the service name and the namespace. These 2 items will be modified into the script that creates the Istio gateway and virtual service (see next).
 
-#### Modify the gateway and virtual service script ####
+#### Modify the gateway and virtual service script
 
 The file [httpbin-gateway.yaml](httpbin-gateway.yaml) from samples should be modified to reflect the deployment into *httpbin* namespace and to use a local domain name for the application.
 
@@ -144,7 +144,7 @@ In our case it will be **httpbin.httpbin.svc.cluster.local**.
 
 The suffix `.svc.cluster.local` may be skipped as the cluster should resolve it but it is safer to put it there.
 
-#### Deploy the gateway and virtual service ####
+#### Deploy the gateway and virtual service
 
 Apply the changes from [`httpbin-gateway.yaml`](httpbin-gateway.yaml):
 
@@ -152,11 +152,11 @@ Apply the changes from [`httpbin-gateway.yaml`](httpbin-gateway.yaml):
 kubectl apply -f httpbin-gateway.yaml
 ```
 
-### Check demo application ###
+### Check demo application
 
 The application may be checked with a CLI tool or with a browser.
 
-#### Check httpbin application with CLI tool ####
+#### Check httpbin application with CLI tool
 
 ```shell
 $ curl -I -HHost:httpbin.local http://cluster:31380
@@ -230,7 +230,7 @@ content-length: 0
 x-envoy-upstream-service-time: 2
 ```
 
-#### Check httpbin application with browser ####
+#### Check httpbin application with browser
 
 In order to check the application with a browser you need to send also the header *Host*.
 In order to do this you need to install an extension/addon to your browser.
@@ -241,7 +241,7 @@ In ModHeader you should set the header `Host` with the value `httpbin.local` and
 
 Istio documentation: https://istio.io/docs/tasks/traffic-management/ingress/ingress-control/
 
-## Reverse proxy ##
+## Reverse proxy
 
 In order to make an easier way to access the web application, we may create a reverse proxy to work together with the Istio gateway. In this way you won't need to forward headers using browser extension/addon as described above.
 
@@ -270,15 +270,15 @@ echo -e "\n"$(minikube ip)" httpbin.local" | sudo tee -a /etc/hosts
 
 Now you are able to access the application *httpbin* in browser: http://httpbin.local
 
-## Install Istio with istioctl ##
+## Install Istio with istioctl
 
-### Copy istioctl to a dir in PATH ###
+### Copy istioctl to a dir in PATH
 
 You will find it in `istio-1.x.y/bin/`
 
 The destination path may be `/usr/local/bin/istioctl`
 
-### Auto completion ###
+### Auto completion
 
 Copy `istio-1.x.y/tools/istioctl.bash` in a location like `$HOME/.local/bin/istioctl.bash`
 
@@ -288,7 +288,7 @@ Add in .bashrc the line:
 source $HOME/.local/bin/istioctl.bash
 ```
 
-### List available installation profiles ###
+### List available installation profiles
 
 ```shell
 $ istioctl profile list
@@ -302,13 +302,13 @@ Istio configuration profiles:
     remote
 ```
 
-### Get profile details ###
+### Get profile details
 
 ```shell
 istioctl profile dump default
 ```
 
-### Install profile default ###
+### Install profile default
 
 ```shell
 istioctl install --set profile=default
@@ -318,7 +318,7 @@ More details at:
 
 <https://istio.io/latest/docs/setup/install/istioctl/>
 
-## Upgrade Istio with istioctl ##
+## Upgrade Istio with istioctl
 
 Download the `istioctl` target version for the upgrade from https://github.com/istio/istio/releases
 
@@ -420,7 +420,7 @@ More about `in-place upgrade` on https://istio.io/latest/docs/setup/upgrade/in-p
 
 There is also the `canary upgrade` option: https://istio.io/latest/docs/setup/upgrade/canary/
 
-## Uninstall Istio ##
+## Uninstall Istio
 
 ```shell
 istioctl x uninstall --purge
@@ -430,7 +430,7 @@ istioctl x uninstall --purge
 kubectl delete namespace istio-system
 ```
 
-## Istio for ARM64 ##
+## Istio for ARM64
 
 Starting with Istio version 1.15 (9-aug-2022) there are ARM64 images provided by Istio:
 
